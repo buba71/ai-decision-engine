@@ -1,6 +1,8 @@
 import json
 from llm_client import LLMClient
 from prompts import TICKET_ANALYSIS_PROMPT
+from models import TicketAnalysis
+from pydantic import ValidationError
 
 class TicketAnalyzer:
     def __init__(self):
@@ -15,12 +17,22 @@ class TicketAnalyzer:
         ]
 
         raw_response = self.llm.ask(messages)
+
         try:
-            return json.loads(raw_response)
+            data = json.loads(raw_response)
+            validated_data = TicketAnalysis(**data)
+            return validated_data.dict()
 
         except json.JSONDecodeError:
 
             return {
                 "error": "Invalid response from LLM client - response was not valid JSON",
                 "raw_response": raw_response[:500]  # Limit length for logging
+            }
+
+        except ValidationError as e:
+            return {
+                "error": "INVALID_SCHEMA",
+                "details": e.errors(),
+                "raw_response": raw_response[:500] # Limit length for logging
             }
