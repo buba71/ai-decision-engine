@@ -1,4 +1,4 @@
-from ticket_analyser import TicketAnalyzer
+from .ticket_analyser import TicketAnalyzer
 
 if __name__ == "__main__":
 

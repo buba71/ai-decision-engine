@@ -1,7 +1,7 @@
 import json
-from llm_client import LLMClient
-from prompts import TICKET_ANALYSIS_PROMPT
-from models import TicketAnalysis
+from .llm_client import LLMClient
+from .prompts import TICKET_ANALYSIS_PROMPT
+from .models import TicketAnalysis
 from pydantic import ValidationError
 
 class TicketAnalyzer:
